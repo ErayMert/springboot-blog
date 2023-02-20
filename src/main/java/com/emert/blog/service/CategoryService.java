@@ -19,7 +19,7 @@ public class CategoryService{
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public void addCategory(CategoryRequest categoryRequest) {
+    public void saveCategory(CategoryRequest categoryRequest) {
 
         Category category = categoryMapper.categoryRequestToCategory(categoryRequest);
         categoryRepository.save(category);

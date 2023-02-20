@@ -24,6 +24,7 @@ import java.util.List;
 public class PostService{
 
     public static final String CATEGORY = "Category";
+    public static final String POST = "Post";
 
     private final PostRepository postRepository;
 
@@ -65,13 +66,13 @@ public class PostService{
 
     public PostDto getPostById(long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Post", "id", id));
+                new ResourceNotFoundException(POST, "id", id));
         return postMapper.postToPostDto(post);
     }
 
     public void updatePost(PostUpdateRequest postRequest, long id) {
         // get post by id from the database
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, "id", id));
 
         Category category = categoryRepository.findById(postRequest.getCategoryId())
                         .orElseThrow(() -> new ResourceNotFoundException(CATEGORY, "id", postRequest.getCategoryId()));
@@ -85,7 +86,7 @@ public class PostService{
 
     public void deletePostById(long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException(POST, "id", id));
         postRepository.delete(post);
     }
 
