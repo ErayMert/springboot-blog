@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -74,8 +73,7 @@ public class GlobalExceptionHandler {
                 .map(objectError -> ValidationInfo.builder()
                         .type(objectError.getCode())
                         .message(objectError.getDefaultMessage())
-                        .build())
-                .collect(Collectors.toList());
+                        .build()).toList();
 
         return BaseResponse.builder()
                 .success(ExceptionsConstant.STATUS_FAILURE)
