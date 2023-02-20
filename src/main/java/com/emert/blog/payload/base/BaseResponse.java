@@ -11,7 +11,6 @@ import java.util.List;
 @Builder
 public class BaseResponse<T> {
     private T data;
-    @Builder.Default
     private boolean success = true;
     private ExceptionInfo error;
     private List<ValidationInfo> validations;

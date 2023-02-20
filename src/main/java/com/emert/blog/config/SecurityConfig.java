@@ -1,5 +1,6 @@
 package com.emert.blog.config;
 
+import com.emert.blog.constant.BlogConstant;
 import com.emert.blog.security.JwtAuthenticationEntryPoint;
 import com.emert.blog.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) ->
                         authorize.antMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .antMatchers("/api/auths/**").permitAll()
+                                .antMatchers(BlogConstant.AUTH_SWAGGER_WHITE_LIST).permitAll()
                                 .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
