@@ -64,10 +64,7 @@ public class GlobalExceptionHandler {
     public Object handleException(MethodArgumentNotValidException exception){
         final ExceptionInfo exceptionInfo = this.getExceptionInfo(exception, ExceptionsConstant.EXCEPTION_TYPE_VALIDATION);
 
-        log.info("Exception Message : {}, Exception Type : {}, Exception Detail : {}",
-                exceptionInfo.getMessage(),
-                ExceptionsConstant.EXCEPTION_TYPE_VALIDATION,
-                exceptionInfo.getDetailedMessage());
+        commonLoggingError(exception, ExceptionsConstant.EXCEPTION_TYPE_VALIDATION, exceptionInfo);
 
         exceptionInfo.setErrorCode("9999");
         exceptionInfo.setMessage("Validation Error");
@@ -104,7 +101,6 @@ public class GlobalExceptionHandler {
         }else{
             exceptionInfo.setMessage(exception.getMessage());
         }
-
 
         exceptionInfo.setSourceSystem("blog-app");
         exceptionInfo.setType(exceptionType);
