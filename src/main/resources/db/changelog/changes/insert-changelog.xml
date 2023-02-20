@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="eray.mert" id="001">
+        <insert tableName="category">
+            <column name="description" value="Spring boot liquibase integration"/>
+            <column name="name" value="Liquibase"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
