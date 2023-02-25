@@ -24,7 +24,7 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse<Void>> saveCategory(@RequestBody CategoryRequest request){
         categoryService.saveCategory(request);
-        return ResponseEntity.ok(new BaseResponse<>());
+        return new ResponseEntity<>(new BaseResponse<>(), HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
