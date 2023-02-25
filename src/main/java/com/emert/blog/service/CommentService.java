@@ -67,8 +67,6 @@ public class CommentService {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
         }
 
-        comment.setName(commentRequest.getName());
-        comment.setEmail(commentRequest.getEmail());
         comment.setBody(commentRequest.getBody());
 
         commentRepository.save(comment);
