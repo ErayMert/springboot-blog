@@ -12,10 +12,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostResponse {
-    private Long id;
     private String title;
     private String description;
     private String content;
     private Set<CommentResponse> comments;
-    private Long categoryId;
+    private CategoryResponse category;
 }
