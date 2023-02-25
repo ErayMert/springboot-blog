@@ -40,7 +40,7 @@ public class CommentService {
 
         List<Comment> comments = commentRepository.findByPostId(postId);
 
-        return commentMapper.commentsToCommentDtos(comments);
+        return commentMapper.commentListToCommentDtoList(comments);
     }
 
     public CommentDto getCommentById(Long postId, Long commentId) {

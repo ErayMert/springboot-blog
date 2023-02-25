@@ -36,7 +36,7 @@ public class CategoryService{
     public List<CategoryDto> getAllCategories() {
 
         List<Category> categories = categoryRepository.findAll();
-        return categoryMapper.categoriesToCategoryDtos(categories);
+        return categoryMapper.categoryListToCategoryDtoList(categories);
     }
 
     public void updateCategory(CategoryRequest request, Long categoryId) {

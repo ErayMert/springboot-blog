@@ -1,9 +1,10 @@
 package com.emert.blog.controller;
 
 
+import com.emert.blog.mapper.CommentMapper;
 import com.emert.blog.payload.base.BaseResponse;
-import com.emert.blog.payload.dto.CommentDto;
 import com.emert.blog.payload.request.CommentRequest;
+import com.emert.blog.payload.response.CommentResponse;
 import com.emert.blog.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final CommentMapper commentMapper;
 
 
     @PostMapping("/{postId}")
@@ -30,17 +32,17 @@ public class CommentController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<BaseResponse<List<CommentDto>>> getCommentsByPostId(@PathVariable(value = "postId") Long postId){
+    public ResponseEntity<BaseResponse<List<CommentResponse>>> getCommentsByPostId(@PathVariable(value = "postId") Long postId){
 
-        List<CommentDto> comments = commentService.getCommentsByPostId(postId);
+        List<CommentResponse> comments = commentMapper.commentDtoListToCommentResponseList(commentService.getCommentsByPostId(postId));
         return ResponseEntity.ok(new BaseResponse<>(comments));
     }
 
     @GetMapping("/{postId}/{id}")
-    public ResponseEntity<BaseResponse<CommentDto>> getCommentById(@PathVariable(value = "postId") Long postId,
+    public ResponseEntity<BaseResponse<CommentResponse>> getCommentById(@PathVariable(value = "postId") Long postId,
                                                      @PathVariable(value = "id") Long commentId){
-        CommentDto commentDto = commentService.getCommentById(postId, commentId);
-        return new ResponseEntity<>(new BaseResponse<>(commentDto), HttpStatus.OK);
+        CommentResponse comment = commentMapper.commentDtoToCommentResponse(commentService.getCommentById(postId, commentId));
+        return new ResponseEntity<>(new BaseResponse<>(comment), HttpStatus.OK);
     }
 
     @PutMapping("/{postId}/{id}")

@@ -1,8 +1,9 @@
 package com.emert.blog.controller;
 
+import com.emert.blog.mapper.CategoryMapper;
 import com.emert.blog.payload.base.BaseResponse;
-import com.emert.blog.payload.dto.CategoryDto;
 import com.emert.blog.payload.request.CategoryRequest;
+import com.emert.blog.payload.response.CategoryResponse;
 import com.emert.blog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -28,14 +30,18 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<BaseResponse<CategoryDto>> getCategory(@PathVariable("id") Long categoryId){
-         CategoryDto categoryDto = categoryService.getCategory(categoryId);
-         return ResponseEntity.ok(new BaseResponse<>(categoryDto));
+    public ResponseEntity<BaseResponse<CategoryResponse>> getCategory(@PathVariable("id") Long categoryId){
+         CategoryResponse category = categoryMapper.categoryDtoToCategoryResponse(categoryService.getCategory(categoryId));
+         return ResponseEntity.ok(new BaseResponse<>(category));
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse<List<CategoryDto>>> getCategories(){
-        return ResponseEntity.ok(new BaseResponse<>(categoryService.getAllCategories()));
+    public ResponseEntity<BaseResponse<List<CategoryResponse>>> getCategories(){
+        return ResponseEntity.ok(
+                new BaseResponse<>(
+                categoryMapper.categoryDtoListToCategoryResponseList(categoryService.getAllCategories())
+                )
+        );
     }
 
     @PreAuthorize("hasRole('ADMIN')")

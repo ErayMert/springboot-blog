@@ -4,7 +4,6 @@ import com.emert.blog.constant.BlogConstant;
 import com.emert.blog.mapper.PostMapper;
 import com.emert.blog.payload.base.BaseResponse;
 import com.emert.blog.payload.dto.PaginatedPostDto;
-import com.emert.blog.payload.dto.PostDto;
 import com.emert.blog.payload.request.PostRequest;
 import com.emert.blog.payload.request.PostUpdateRequest;
 import com.emert.blog.payload.response.PostResponse;
@@ -70,8 +69,8 @@ public class PostController {
     }
 
     @GetMapping("/category/{id}")
-    public ResponseEntity<BaseResponse<List<PostDto>>> getPostsByCategory(@PathVariable("id") Long categoryId){
-        List<PostDto> postDtos = postService.getPostsByCategory(categoryId);
-        return ResponseEntity.ok(new BaseResponse<>(postDtos));
+    public ResponseEntity<BaseResponse<List<PostResponse>>> getPostsByCategory(@PathVariable("id") Long categoryId){
+        List<PostResponse> posts = postMapper.postDtoListToPostResponseList(postService.getPostsByCategory(categoryId));
+        return ResponseEntity.ok(new BaseResponse<>(posts));
     }
 }
