@@ -1,11 +1,9 @@
 package com.emert.blog.payload.request;
 
-import com.emert.blog.payload.dto.CommentDto;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @Data
 public class PostRequest {
@@ -20,6 +18,4 @@ public class PostRequest {
 
     @NotEmpty
     private String content;
-    private Set<CommentDto> comments;
-
 }
