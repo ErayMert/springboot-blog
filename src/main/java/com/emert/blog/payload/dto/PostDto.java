@@ -1,10 +1,14 @@
 package com.emert.blog.payload.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDto {
     private Long id;
     private String title;

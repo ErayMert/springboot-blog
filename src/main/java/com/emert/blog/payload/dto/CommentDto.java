@@ -1,9 +1,13 @@
 package com.emert.blog.payload.dto;
 
-import lombok.Data;
+import lombok.*;
 
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentDto {
     private Long id;
     private String name;
