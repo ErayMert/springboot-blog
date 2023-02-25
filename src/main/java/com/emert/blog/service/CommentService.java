@@ -59,7 +59,7 @@ public class CommentService {
     public void updateComment(Long postId, long commentId, CommentRequest commentRequest) {
 
         PostDto post = postService.getPostById(postId);
-        // retrieve comment by id
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new ResourceNotFoundException(COMMENT, "id", commentId));
 
@@ -68,15 +68,12 @@ public class CommentService {
         }
 
         comment.setBody(commentRequest.getBody());
-
         commentRepository.save(comment);
     }
 
     public void deleteComment(Long postId, Long commentId) {
-        // retrieve post entity by id
         PostDto post = postService.getPostById(postId);
 
-        // retrieve comment by id
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new ResourceNotFoundException(COMMENT, "id", commentId));
 
