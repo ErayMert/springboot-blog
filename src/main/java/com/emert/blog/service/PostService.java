@@ -65,8 +65,8 @@ public class PostService{
     }
 
     public PostDto getPostById(long id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(POST, "id", id));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(POST, "id", id));
         return postMapper.postToPostDto(post);
     }
 

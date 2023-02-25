@@ -1,12 +1,16 @@
 package com.emert.blog.controller;
 
 import com.emert.blog.constant.BlogConstant;
+import com.emert.blog.mapper.PostMapper;
 import com.emert.blog.payload.base.BaseResponse;
 import com.emert.blog.payload.dto.PaginatedPostDto;
 import com.emert.blog.payload.dto.PostDto;
 import com.emert.blog.payload.request.PostRequest;
 import com.emert.blog.payload.request.PostUpdateRequest;
+import com.emert.blog.payload.response.PostResponse;
 import com.emert.blog.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,13 +21,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@RequiredArgsConstructor
 public class PostController {
 
-    private PostService postService;
+    private final PostService postService;
+    private final PostMapper postMapper;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("{categoryId}")
@@ -33,18 +36,20 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse<PaginatedPostDto>> getAllPosts(
+    public ResponseEntity<BaseResponse<PageImpl<PostResponse>>> getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = BlogConstant.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = BlogConstant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = BlogConstant.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = BlogConstant.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ){
-        return ResponseEntity.ok(new BaseResponse<>(postService.getPaginatedPosts(pageNo, pageSize, sortBy, sortDir)));
+
+        PaginatedPostDto paginatedPosts = postService.getPaginatedPosts(pageNo, pageSize, sortBy, sortDir);
+        return ResponseEntity.ok(new BaseResponse<>(new PageImpl<>(postMapper.postDtoListToPostResponseList(paginatedPosts.getPosts()), paginatedPosts.getPageable(), paginatedPosts.getCount())));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") long id){
-        return ResponseEntity.ok(postService.getPostById(id));
+    public ResponseEntity<PostResponse> getPostById(@PathVariable(name = "id") Long id){
+        return ResponseEntity.ok(postMapper.postDtoToPostResponse(postService.getPostById(id)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -58,11 +63,10 @@ public class PostController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<BaseResponse<String>> deletePost(@PathVariable(name = "id") long id){
+    public ResponseEntity<BaseResponse<Void>> deletePost(@PathVariable(name = "id") Long id){
 
         postService.deletePostById(id);
-
-        return new ResponseEntity<>(new BaseResponse<>("Post entity deleted successfully."), HttpStatus.OK);
+        return ResponseEntity.ok(new BaseResponse<>());
     }
 
     @GetMapping("/category/{id}")
